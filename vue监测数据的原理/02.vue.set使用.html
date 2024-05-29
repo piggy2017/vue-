@@ -1,0 +1,72 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-24 18:10:03
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>名称:{{name}}</div>
+        <div>地址:{{address}}</div>
+        <div>年龄:真实年龄:{{student.age.rAge}},对外:{{student.age.sAge}}</div>
+
+        <div v-if="student.sex">性别:{{student.sex}}</div>
+        <button @click="vueSet">点击给student上添加响应式数据</button>
+        
+        <div>朋友们</div>
+        <ul>
+            <li v-for="(f,index) in student.friends" :key="index">
+                {{f.name}}:{{f.age}}
+            </li>
+        </ul>
+
+    </div>
+</body>
+<script>
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "小黄",
+            address: "北京",
+            student: {
+                name: 'tom',
+                age: {
+                    rAge: 40,
+                    sAge: 29,
+                },
+                friends: [
+                    { name: "jreey", age: 35 },
+                    { name: "tony", age: 36 },
+                ]
+            }
+        },
+        methods: {
+            vueSet() {   // 调用过后,student上的sex数据会变成响应式数据,拥有get/set方法
+                //this.student.sex='男';  //  点击button会发现， sex已经成功添加，但是视图并未刷新：因为这种写法不会变成响应式数据,
+                // 原因在于在Vue实例创建时， student.sex 并未声明，因此就没有被Vue转换为响应式的属性，自然就不会触发视图的更新
+
+
+                // vm.$set(vm.student, 'sex', '男');  // vm._data.student === vm.student
+                // Vue.set(this.student, 'sex', '男');
+                this.$set(this.student, 'sex', '男');   // 三种写法都可以
+            }
+        }
+    })
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,88 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-23 10:34:48
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- <div>名称:{{name}}</div>
+        <div>地址:{{address}}</div> -->
+    </div>
+</body>
+<script>
+
+    // new Vue({
+    //     el: "#root",
+    //     data: {
+    //         name: "sunlin",
+    //         address: "北京"
+    //     }
+    // })
+
+
+    // 实现数据监听的基本原理 ,但是vue比这个更加复杂:1、我们需要通过vm._data.name进行访问,vuee中直接通过vm.name访问;2、vue中通过递归监听嵌套的对象,这个例子只监听了一层
+    let obj = {
+        name: "小黄",
+        age: 20,
+        a: {
+            b: 1,
+            c:{
+                d:100
+            }
+        }
+    }
+
+    function Observer(obj) {
+        // 汇总对象中所有的属性形成一个数组
+        const keys = Object.keys(obj);
+        // 遍历
+        keys.forEach(k => {  // 这种方式就称为数据劫持,给对象的每一个属性添加get\set,数据劫持的目的是为了监听数据的变化和更新dom
+            const value = obj[k];
+            if (typeof value === 'object' && value !== null) {
+                // 如果属性值是对象，则递归调用构造函数处理嵌套属性
+                obj[k] = new Observer(value);
+            }
+
+            Object.defineProperty(this, k, {   // 这儿的this指向实例对象
+                get() {
+                    console.log("get", k, obj[k])
+                    return obj[k]
+                },
+                set(newValue) {
+                    console.log("set", k, newValue)
+                    if (typeof newValue === 'object' && newValue !== null) {
+                        // 如果新值是对象，则递归调用构造函数处理嵌套属性
+                        obj[k] = new Observer(newValue);
+                    } else {
+                        obj[k] = newValue;
+                    }
+                }
+            })
+        })
+    }
+
+    const obj2 = new Observer(obj);
+    console.log(obj2, "obj2")   // 可以看到 obj2的每一个属性都有get和set方法,读写属性时都会这方法
+
+    // vue中 的逻辑 会将
+    //  准备一个vue的实例对象  ,let vm={}; 
+    // 然后 vm._data=obj2;  这样就可以通过vm来访问obj2中的属性了
+    let vm = {};
+    vm._data = obj2;
+    obj = obj2;
+    // 这样, vm._data 、obj2、obj 都指向同一个对象, 通过vm._data可以访问obj2中的属性
+</script>
+
+</html>

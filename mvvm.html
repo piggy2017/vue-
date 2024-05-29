@@ -1,0 +1,47 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-16 14:21:44
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>mvvm 模型 m=model (指向data) , v=view(指向dom视图模板) vm=viewModel (指向vue实例)</div>
+        <div>viewModal的主要作用, viewModal起到桥梁和连接的作用
+            1:数据绑定,将model(data)中的数据绑定到view(dom)上;
+            2:dom监听/事件监听,监听view上的变化,并在model中修改数据;
+        </div>
+
+
+        <!-- 对应mvvm中的view -->
+        <div>姓名:{{name}}</div>
+        <div>地址:{{address}}</div>
+    </div>
+
+
+    <script type="text/javascript">
+        const vm = new Vue({    // 对应mvvm中的 viewModel
+            el: '#root',   
+            data: {       // 对应mvvm中的 model
+                name:'sunlin',
+                address:'北京'
+            }
+        })
+
+        console.log(vm)
+    </script>
+</body>
+
+
+</html>

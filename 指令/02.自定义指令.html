@@ -1,0 +1,104 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-05-07 14:18:26
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <pre>
+            需求:定义一个 v-big 指令,使得元素的字体大小变大
+        </pre>
+        <div>当前的n值是:{{n}}</div>
+        <div>v-big 指令,使得n放大乘以10,同时字体放大: <span v-big2="n"></span></div>
+        <button @click="n++">点击n+1</button>
+        <hr />
+
+        <pre>
+            需求2:定义一个 v-fbind 指令,让其所绑定的input元素默认获取焦点,字体变成红色
+        </pre>
+        <input type="text" v-fbind:value="n">
+
+    </div>
+</body>
+<script>
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            n: 1,
+            inputValue: "hello world!"
+        },
+        methods: {
+
+        },
+        directives: {
+            // big函数在指令和元素成功绑定时会调用,指令所用到的数据发生变化时也会被调用
+            // 函数式写法是简写的方式
+            big(e, obj) {  // e:dom元素对象, obj:指令对象
+                console.log(e, obj)
+                console.log(this)   // 指向windows
+                e.innerText = obj.value * 10;
+                e.style.fontSize = '50px'
+            },
+
+            // fbind(e, obj) {   // 这种写法 页面初始加载的时候无法获取焦点,当n改变的时候才能获取到焦点
+            //     console.log("v-fbind", e, obj)
+            //     e.focus();
+            //     e.style.color='red';
+            // },
+            fbind: {
+                bind(e, obj) {
+                    console.log(this)   // 指向windows
+                    console.log("指令与元素成功绑定时触发");
+                    e.style.color = 'red';
+                    e.value = obj.value;
+                },
+                inserted(e, obj) {
+                    console.log("指令所在的元素被插入页面时触发")
+                    e.focus();
+                },
+                update(e, obj) {
+                    console.log("指令所在的模板被重新解析时触发");
+                    e.value = obj.value;
+                }
+            }
+        }
+    })
+
+    // 定义全局的指令
+    Vue.directive('big2', function (el, binding) {
+        console.log(el, binding);
+        // do something ...
+        el.innerText = binding.value * 10;
+        el.style.fontSize = '50px'
+    })
+
+    Vue.directive('fbind2', {
+        bind(el, binding, vnode) { },
+        inserted(el, binding, vnode) { },
+        update(el, binding, vnode, oldVnode) { },
+        componentUpdated(el, binding, vnode) { },
+        unbind(el, binding, vnode) { },
+    });
+
+
+</script>
+
+</html>

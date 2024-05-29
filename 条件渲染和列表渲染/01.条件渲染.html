@@ -1,0 +1,54 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-18 16:16:59
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <pre>
+        v-show:只是简单的控制节点的显示和隐藏,不会重复渲染节点,只是通过display来控制节点的显示和隐藏, 有更高的初使渲染性能消耗
+        v-if:控制节点的显示和隐藏,会重复渲染节点,如果条件为false,则节点不会被渲染到页面中,   有更高的切换性能消耗
+
+        v-if 适用于:切换频率较低的场景,
+            特点:不展示的dom元素直接移除,
+        v-show 适用于:切换频率较高的场景,
+            特点:不展示的dom元素不会被移除,通过display:none隐藏
+        备注:
+            使用v-if时,元素可能无法获取到,而使用v-show一定可以获取到
+    </pre>
+    <div id="root">
+        <div v-show="show">使用v-show 来判断</div>
+
+        <div v-if="number===1">number===1</div>
+        <div v-else-if="number===2">number===2</div>
+        <div v-else>number===其他值</div>
+        <button @click="number++">点击改变number</button>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            show:false,
+            number:1
+        },
+        methods:{
+        },
+
+        
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,56 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 11:06:16
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-05-09 10:08:35
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{msg}}</h1>
+        <h2>{{Date.now()}}</h2>
+        <a v-bind:href='url'>点击跳转百度</a>
+        <div>单向数据绑定,数据只能从data流向页面, 使用v-bind:</div>
+        <input type="text" :value='name'>
+        <div>双向数据绑定,数据不仅能从data流向页面,也能从页面流向data, 使用v-model ,只能应用到表单类元素</div>
+        <input type="text" v-model='name'>
+        <pre>
+            v-model 有三个修饰符:
+                .lazy:失去焦点时更新数据,
+                .number:输入字符串转为数字,
+                .trim:去除首尾空格
+        </pre>
+
+        <div>mvvm 模型 m=model (指向data) , v=view(指向dom视图模板) vm=viewModel (指向vue实例)</div>
+        <div>viewModal的主要作用,
+            1:数据绑定,将model(data)中的数据绑定到view(dom)上;
+            2:dom监听/事件监听,监听view上的变化,并在model中修改数据;
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        Vue.config.productionTip = false;   // 阻止 vue 在启动时生成生产提示。
+
+        const vm = new Vue({
+            el: '#root',    // 挂载点
+            data: {
+                msg: 'hello vue',
+                url: "https://www.baidu.com",
+                name:'sunlin'
+            }
+        })
+    </script>
+</body>
+
+
+</html>

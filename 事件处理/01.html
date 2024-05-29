@@ -1,0 +1,82 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-18 14:28:30
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <pre>
+        vue事件的基本使用:
+        1.使用v-on:xxx 或者@xxx 绑定事件,xxx是事件名称;
+        2.事件的回调需要定义在methods中,最终会到vm上;
+        3.methods中配置的函数,不要使用箭头函数,因为箭头函数的this指向window;
+        4.事件的回调函数默认有一个参数event,可以通过$event来获取;
+        5.methods中配置的函数,都是被vue管理的函数,this指向vm或者组件实例对象;
+    </pre>
+    <div id="root">
+        <div>名称:{{name}}</div>
+        <div>地址:{{address}}</div>
+        <button v-on:click="showInfo1">点我1</button>
+        <button @click="showInfo2(66)">点我2</button>
+
+        <!-- 事件修饰符 阻止默认行为 (e.preventDefault()) -->
+        <a href="http://www.baidu.com" @click.prevent="showInfo1">dian wo</a>
+
+        <!-- 事件修饰符 stop 阻止事件冒泡 (e.stopPropagation()) -->
+        <div @click="showInfo1">
+            <button @click.stop="showInfo2(66)">点我2</button>
+        </div>
+
+        <!-- 事件修饰符 once 事件只触发一次 -->
+        <button @click.once="showInfo2(66)">点我2</button>
+
+        <!-- capture 使用事件的捕获 -->
+        <div @click.capture="showInfo1">
+            <button @click="showInfo2(66)">点我2</button>
+        </div>
+
+        <!-- passive 事件的默认行为立即执行,无需等待事件的回调执行完毕 下方例子无效 -->
+        <!-- <a href="http://www.baidu.com" @click.passive="showInfo3">passive</a> -->
+
+        <!-- self 只有event.target是当前操作的元素时才触发事件 -->
+        <div @click.self="showInfo1">
+            <button @click="showInfo2(66)">点我2</button>
+        </div>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "sunlin",
+            address: "北京"
+        },
+        methods: {   // 所有被vue管理的方法都会绑定(不是代理)到vm上,不要写成箭头函数,this指向会指向window
+            showInfo1() {
+                console.log(vm === this)  // true
+                alert('showInfo1')
+            },
+            showInfo2(num) {
+                console.log(num)  // 66
+                alert('showInfo2')
+            },
+            showInfo3() {
+                alert('ni hao')
+            }
+        }
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,64 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-19 10:18:01
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <pre>
+        使用   v-for in  或者 v-for of都可以
+    </pre>
+    <div id="root">
+        <!-- 遍历数组 -->
+        <ul>
+            <li v-for="(item,index) of persons" :key="index">姓名:{{item.name}},年龄:{{item.age}}</li>
+        </ul>
+        <hr />
+        <!-- 遍历对象 -->
+        <ul>
+            <li v-for="(key,value) of cars" :key="key">
+                {{key}}----{{value}}
+            </li>
+        </ul>
+        <hr />
+        <!-- 遍历字符串 -->
+        <ul>
+            <li v-for="(value,i) in str" :key="i">---{{value}}---{{i}}</li>
+        </ul>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            persons: [
+                { name: "sunlin", age: 18 },
+                { name: "sunlin2", age: 19 },
+                { name: "sunlin3", age: 20 },
+            ],
+            cars: {
+                name: "宝马",
+                price: '70万',
+                color: "黑色"
+            },
+            str: "hello"
+        },
+        methods: {
+
+        }
+    })
+
+</script>
+
+</html>

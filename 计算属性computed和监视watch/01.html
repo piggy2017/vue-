@@ -1,0 +1,70 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-18 14:30:58
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <pre>
+        计算属性:
+        1.定义:要用的属性不存在,需要通过已有的属性计算得来.
+        2.原理,底层借助了Object.defineProperty方法提供的getter和setter.
+        3.计算属性是基于它们的依赖进行缓存的,只有在它的相关依赖发生改变时才会重新求值.
+        4.计算属性的get方法,什么时候调用? 1.初次读取计算属性的值的时候会调用; 2.所依赖的数据发生变化的时候也会调用
+        5.备注:
+            1.计算属性最终会出现的vm上,直接读取使用即可.
+            2.如果计算属性要被修改,那么必须写set函数去响应修改,且set中要引起计算所依赖的数据发生变化.
+        
+    </pre>
+    <div id="root">
+        <div>通过普通函数的方式获取,弊端(每次data中的数据发生变化的时候,都会造成视图模板重新render,就会重复调用该方法,造成浪费)    我的信息:{{fullName()}}</div>
+        <div>我的信息:{{fullName2}}</div>
+        <div>信息:{{info}}</div>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "sunlin",
+            age:20,
+            address: "北京"
+        },
+        methods:{
+            fullName(){
+                return this.name + " - " + this.address
+            }
+        },
+        computed:{
+            fullName2:{  // 计算属性的完整写法
+                // get什么时候调用? 1.初次读取fullName属性值的时候会调用; 2.所依赖的数据发生变化的时候也会调用
+                get(){
+                    return this.name + " - " + this.address
+                },
+                set(value){
+                    const arr = value.split(" - ")
+                    this.name = arr[0]
+                    this.address = arr[1]
+                }
+            },
+            info(){   // 一般用这种写法
+                return this.name + " - " + this.age + " - " + this.address
+            }
+        }
+        
+    })
+
+</script>
+
+</html>

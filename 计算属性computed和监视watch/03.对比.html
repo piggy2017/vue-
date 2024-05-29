@@ -1,0 +1,81 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-18 15:36:49
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <pre>
+        深度监视:
+            1.vue中的watch默认不监测对象内部的改变,
+            2.配置deep:true 可以监测对象内部的多层级的值改变.
+        备注:
+            1.vue自身可以监测到对象内部的值改变,但是vue提供的watch默认不可以
+    </pre>
+    <div id="root">
+        <div>今天的天气很{{info}}.默认的天气:{{weather}}</div>
+        <button @click="changeWeather">点击</button>
+        <hr/>
+        <div>a的值:{{number.a}}</div>
+        <button @click="number.a++">点击 让 a+1</button>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            isHot: true,
+            weather: "默认天气",
+            number:{
+                a:1,
+                b:2
+            }
+        },
+        computed: {
+            info() {
+                return this.isHot ? "炎热" : "凉爽"
+            }
+        },
+        methods: {
+            changeWeather() {
+                this.isHot = !this.isHot
+            }
+        },
+        watch: {
+            isHot(newVal, oldVal) {
+                console.log(newVal, oldVal)
+                this.weather = newVal ? "ishot为true === 炎热" : "ishot为false === 凉爽"
+            },
+            info(newVal, oldVal) {
+                console.log("watch 中 监听 computed中的属性",newVal, oldVal)
+            },
+
+            number(newVal, oldVal){   // 监听不到number 里面中的属性变化
+                console.log("watch 中 监听 number",newVal, oldVal)
+            },
+
+
+            // 监视多级结构中的某个属性的变化
+            'number.a':{
+                handler(){
+                    console.log('number.a 被改变了')
+                }
+            }
+        }
+
+    })
+
+</script>
+
+</html>

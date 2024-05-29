@@ -1,0 +1,81 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-05-07 14:06:01
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <div>名称:{{name}}</div>
+        <pre>使用v-text</pre>
+        <div v-text='name'></div>
+        <pre>使用v-html</pre>
+        <div v-html="str"></div>
+        <pre>
+            v-html:会替换掉几诶单中所有的内容,
+            安全问题:
+                1.在网站的动态渲染任意的html是非常危险的,容易导致xss(冒充用户身份)攻击;
+                2.一定要在可信的内容上使用v-html,且不要用在用户提交的内容上.(防止cookie被抓取的方式,服务器在返回cokie的时候加上httpOnly属性,这样js就无法获取到cookie了)
+        </pre>
+
+        <pre>
+            v-cloak:
+                1.在vue实例创建之前,会有一段时间,页面会显示{{name}}这样的模板语法,这样会导致页面的闪烁;
+                2.使用v-cloak可以解决这个问题,在vue实例创建之前,页面会隐藏,直到vue实例创建完成,才会显示页面;
+                3.在样式中设置[v-cloak]{display:none;}即可;
+        </pre>
+        <div v-cloak>名称:{{name}}</div>
+
+        <pre>
+            v-once: 
+                1.只初次动态渲染一次,就视为静态内容了,不会随着数据的变化而变化;
+                2.适用于不需要改变的内容,可以用于性能优化;
+        </pre>
+        <div v-once>初始化的值是:{{n}}</div>
+        <div>当前的n值是:{{n}}</div>
+        <button @click="n++">点击n+1</button>
+        <h4>点击的时候 v-once 里面的n不发生变化</h4>
+
+
+        <pre>
+            v-pre:
+                1.跳过这个元素和它的子元素的编译过程,可以用来显示原始的mustache标签;
+                2.可以用来显示vue的模板语法,不会被vue解析;
+        </pre>
+    </div>
+</body>
+<script>
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "小黄",
+            str: "<h1>我是标题</h1>",
+            n: 1
+        },
+        methods: {
+
+        }
+    })
+
+
+
+</script>
+
+</html>

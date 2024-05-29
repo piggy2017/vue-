@@ -1,0 +1,43 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-16 14:53:26
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>数据代理:通过一个对象代理对另一个对象中属性的操作(读/写)</div>
+    </div>
+</body>
+<script>
+    let obj = {
+        x: 100
+    }
+    let obj2 = {
+        y: 200
+    }
+    Object.defineProperty(obj2, "x", {
+        get() {
+            return obj.x;
+        },
+        set(value) {
+            obj.x = value;
+        }
+    })
+
+    // 在控制台执行  obj2.x 会返回100
+    // 在控制台执行  obj2.x = 300 会修改obj.x的值为300
+</script>
+
+</html>

@@ -1,0 +1,113 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-05-20 16:37:21
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        #root {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .my_transfor {
+            position: absolute;
+            z-index: 9;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div @mouseup="getEvent($event)">
+        常用的按键修饰符:
+        .enter 回车键
+        .delete 删除和退格键
+        .tab 换行
+        .esc 退出
+        .space 空格
+        .up 上
+        .down 下
+        .left 左
+        .right 右
+        也可以使用 e.keyCode去指定具体的按键
+    </div> -->
+    <div id="root" @mouseup="getEvent($event)">
+        <div>
+            常用的按键修饰符:
+            .enter 回车键
+            .delete 删除和退格键
+            .tab 换行
+            .esc 退出
+            .space 空格
+            .up 上
+            .down 下
+            .left 左
+            .right 右
+            也可以使用 e.keyCode去指定具体的按键
+        </div>
+        <div>名称:{{name}}</div>
+        <input type="text" placeholder="按下回车键打印" @keyup.enter="showInfo($event)">
+        <button v-show='showTransfor' :style="{left:x+'px',top:y+'px'}" class="my_transfor"
+            onclick="tansforFunc">翻译</button>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "sunlin",
+            showTransfor: false,
+            screenWidth: 0,
+            screenHeight: 0,
+            x: 0,
+            y: 0
+        },
+        mounted() {
+            // 获取当前屏幕宽度
+            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+            // 获取当前屏幕高度
+            var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+            console.log("屏幕宽度: " + screenWidth);
+            console.log("屏幕高度: " + screenHeight);
+            this.screenWidth = screenWidth;
+            this.screenHeight = screenHeight;
+        },
+        methods: {   // 所有被vue管理的方法都会绑定(不是代理)到vm上,不要写成箭头函数,this指向会指向window
+            showInfo(e) {
+                console.log(e.target.value)
+            },
+            getEvent(e) {
+                let txt = window.getSelection ? window.getSelection().toString() : document.selection.createRange().text;   // 获取选中的文本内容
+                const { x, y } = e;
+                if (txt) {
+                    this.x = x;
+                    this.y = y;
+                    this.showTransfor = true;
+                } else {
+                    this.x = 0;
+                    this.y = 0;
+                    this.showTransfor = false;
+                }
+            },
+            tansforFunc() {
+
+            }
+        }
+    })
+
+</script>
+
+
+</html>

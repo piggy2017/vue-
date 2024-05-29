@@ -1,0 +1,93 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-05-06 17:59:52
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>名称:{{name}}</div>
+        <div>当前n的值是:{{n}}</div>
+        <button @click="n++">点击n+1</button>
+        <button @click="destroyVm">点击销毁vm</button>
+
+        <pre>
+            异步请求,可以在钩子函数 created、beforeMount、mounted 中进行异步请求，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
+
+            如果异步请求不需要依赖 Dom 推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
+            能更快获取到服务端数据，减少页面 loading 时间；
+            如果依赖dom或者有dom操作,则在mounted中调用异步请求,因为在mounted中dom已经挂载完成了.
+        </pre>
+    </div>
+</body>
+<script>
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "小黄",
+            n:1
+        },
+        methods: {
+            destroyVm(){
+                this.$destroy();
+            }
+        },
+        beforeCreate() {  
+            // 此时无法通过vm访问到data中的数据、methods中的方法等
+            console.log("beforeCreate",this); // 控制台中的vm 中没有 name和n
+        },
+        // 在此阶段实现了数据监测、数据代理等等
+        created(){      
+            // 此时可以通过vm访问到data中的数据、methods中的方法等
+            console.log("created",this)
+        },
+        // 在此阶段vue开始解析模板,生成虚拟dom(内存中),页面还不能显示解析好的内容
+        beforeMount() {  
+            // 页面呈现的是未经vue编译的dom结构,所有对dom的操作,最终都不奏效.
+            console.log("beforeMount",this);
+            //debugger;   // 这儿可以看到页面中 {{name}} \ {{n}}未被解析
+        },
+        // 在此阶段vue将内存中的 虚拟dom 转为真实dom挂载到页面el
+        mounted(){
+            // 页面中呈现的是经过Vue编译过的dom,对dom的操作有效.
+            // 至此初始化过程结束,一般在此进行发送请求,绑定自定义事件,开启定时器等操作
+            console.log("mounted",this);
+        },
+        beforeUpdate() {
+            // 此时,数据是新的,但页面是旧的,即:页面尚未和数据保持同步;
+            console.log("beforeUpdate",this);
+            // debugger;  // 这儿可以在控制台看到 n 已经改变,但页面没更新
+        },
+        // 此阶段,根据新数据,生成新的虚拟dom,随后与旧的虚拟dom进行对比,最终完成页面的更新.即:完成了model==>view的更新.
+        updated() {
+            // 此时,数据是新的,页面也是新的,页面和数据保持同步
+            console.log("updated",this);
+        },
+        beforeDestroy() {
+            // 此时,vm中的所有data、methods、指令等等,都是可用状态,马上要执行销毁过程,一般在此阶段:关闭定时器,取消订阅消息、解绑自定义事件等收尾操作.
+            // 此时对data的修改不会再触发更新了
+            console.log("beforeDestroy",this);
+        },
+        destroyed() {
+            console.log("destroyed",this);
+        },
+
+    })
+
+
+
+</script>
+
+</html>

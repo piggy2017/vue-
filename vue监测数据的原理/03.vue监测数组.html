@@ -1,0 +1,94 @@
+<!--
+ * @Author: 孙林 1164700321@qq.com
+ * @Date: 2024-04-16 14:18:51
+ * @LastEditors: 孙林
+ * @LastEditTime: 2024-04-19 15:22:28
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hello vue</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <pre></pre>
+    <div id="root">
+        <div>名称:{{name}}</div>
+        <div>地址:{{address}}</div>
+        <div>年龄:真实年龄:{{student.age.rAge}},对外:{{student.age.sAge}}</div>
+
+        <div v-if="student.sex">性别:{{student.sex}}</div>
+        <button @click="addsex">点击给student上添加响应式数据(sex)</button>
+        <button @click="student.age.rAge++">点击给student上的真实年龄加1</button>
+        <button @click.once="addFriend">在列表首位添加一个朋友</button>
+        <button @click.once="editFriend">修改列表首位朋友姓名为张三</button>
+        <button @click.once="addHobby">添加一个爱好</button>
+
+        <button @click.once="updateHobby">修改第一个爱好为开车</button>
+        <hr />
+        <div>爱好</div>
+        <ul>
+            <li v-for="(h,index) in student.hobby">{{index}}---{{h}}</li>
+        </ul>
+        <hr />
+        <div>朋友们</div>
+        <ul>
+            <li v-for="(f,index) in student.friends" :key="index">
+                {{f.name}}:{{f.age}}
+            </li>
+        </ul>
+
+    </div>
+</body>
+<script>
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "小黄",
+            address: "北京",
+            student: {
+                name: 'tom',
+                age: {
+                    rAge: 40,
+                    sAge: 29,
+                },
+                hobby: ['篮球', '足球', '乒乓球'],  
+                friends: [
+                    { name: "jreey", age: 35 },
+                    { name: "tony", age: 36 },
+                ]
+            }
+        },
+        methods: {
+            addsex() {
+                Vue.set(this.student, 'sex', '男');
+            },
+            addFriend() {
+                this.student.friends.unshift({ name: "anny", age: 18 })
+            },
+            editFriend() {
+                this.student.friends[0].name = "张三";   // 可以修改
+            },
+            addHobby(){
+                this.student.hobby.push('吃饭')
+            },
+            updateHobby(){
+                // this.student.hobby[0] = '开车'   // 无效修改
+
+                // this.student.hobby.splice(0,1,'开车')       // 有效修改
+                this.$set(this.student.hobby, 0, '开车')    // 有效修改
+            }
+        }
+    })
+
+
+
+</script>
+
+</html>
